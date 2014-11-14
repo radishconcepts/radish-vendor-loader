@@ -1,4 +1,10 @@
 {
+	"name": "radishconcepts/radish-vendor-loader",
+	"description": "Enables WordPress to load plugins from the `vendor-plugins` directory",
+	"support"    : {
+		"issues": "https://github.com/radishconcepts/radish-vendor-loader/issues",
+		"source": "https://github.com/radishconcepts/radish-vendor-loader"
+	},
 	"require": {
 		"xrstf/composer-php52": "1.*"
 	},
