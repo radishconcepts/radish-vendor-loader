@@ -29,16 +29,14 @@ class Radish_Vendor_Loader_Admin extends Radish_Vendor_Loader_Core {
 	protected $all_count = 0;
 
 	/**
-	 * constructor
-	 *
-	 * @since  0.1
+	 * @param $loader Radish_Vendor_Loader
 	 * @return \Radish_Vendor_Loader_Admin
 	 */
-	public function __construct() {
+	public function __construct( $loader ) {
 		add_action( 'plugins_loaded', array( $this, 'setup_actions' ), 11 );
 		add_action( 'load-plugins.php', array( $this, 'init' ) );
 
-		parent::__construct();
+		parent::__construct( $loader );
 	}
 
 	/**

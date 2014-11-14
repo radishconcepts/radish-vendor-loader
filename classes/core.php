@@ -1,7 +1,12 @@
 <?php
 
 class Radish_Vendor_Loader_Core {
-	public function __construct() {
+	/** @var Radish_Vendor_Loader */
+	protected $loader;
+
+	public function __construct( $loader ) {
+		$this->loader = $loader;
+
 		add_action( 'plugins_loaded', array( $this, 'load_plugins' ), 99 );
 	}
 
