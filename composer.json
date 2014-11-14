@@ -1,6 +1,7 @@
 {
 	"name": "radishconcepts/radish-vendor-loader",
 	"description": "Enables WordPress to load plugins from the `vendor-plugins` directory",
+	"type": "wordpress-plugin",
 	"support"    : {
 		"issues": "https://github.com/radishconcepts/radish-vendor-loader/issues",
 		"source": "https://github.com/radishconcepts/radish-vendor-loader"
