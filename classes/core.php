@@ -7,7 +7,8 @@ class Radish_Vendor_Loader_Core {
 	public function __construct( $loader ) {
 		$this->loader = $loader;
 
-		add_action( 'plugins_loaded', array( $this, 'load_plugins' ), 99 );
+		add_action( 'plugins_loaded', array( $this, 'setup_vendors_type' ), 2 );
+		add_action( 'plugins_loaded', array( $this, 'load_plugins' ), 2 );
 		add_filter( 'plugins_url', array( $this, 'plugins_url' ), 10, 3 );
 	}
 
@@ -26,6 +27,13 @@ class Radish_Vendor_Loader_Core {
 		}
 
 		return $url;
+	}
+
+	public function setup_vendors_type() {
+		$this->register_plugin_directory( array(
+			'dir' => 'vendor-plugins',
+			'label' => 'Vendor',
+		) );
 	}
 
 	/**

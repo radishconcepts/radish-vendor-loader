@@ -5,27 +5,18 @@
  * Description: Allows plugins to be loaded via Composer and placed in a separate directory.
  */
 
-add_action( 'plugins_loaded', 'radish_vendor_loader_plugins_loaded' );
-
-function radish_vendor_loader_plugins_loaded() {
-	global $radish_vendor_loader;
-	$radish_vendor_loader = new Radish_Vendor_Loader();
-}
+global $radish_vendor_loader;
+$radish_vendor_loader = new Radish_Vendor_Loader();
 
 class Radish_Vendor_Loader {
 	public function __construct() {
 		$this->do_autoload();
 
 		if ( is_admin() ) {
-			$class = new Radish_Vendor_Loader_Admin( $this );
+			new Radish_Vendor_Loader_Admin( $this );
 		} else {
-			$class = new Radish_Vendor_Loader_Core( $this );
+			new Radish_Vendor_Loader_Core( $this );
 		}
-
-		$class->register_plugin_directory( array(
-			'dir' => 'vendor-plugins',
-			'label' => 'Vendor',
-		) );
 	}
 
 	private function do_autoload() {
