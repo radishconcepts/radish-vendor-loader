@@ -8,6 +8,24 @@ class Radish_Vendor_Loader_Core {
 		$this->loader = $loader;
 
 		add_action( 'plugins_loaded', array( $this, 'load_plugins' ), 99 );
+		add_filter( 'plugins_url', array( $this, 'plugins_url' ), 10, 3 );
+	}
+
+	public function plugins_url( $url, $path, $plugin ) {
+		$dir = dirname( plugin_basename( $plugin ) );
+		$dir_parts = explode('/', $dir );
+		$dir_name = end( $dir_parts );
+		$dir = str_replace( $dir_name, '', $dir );
+		$vendor_plugins = get_option( 'active_plugins_vendor' );
+
+		foreach ( $vendor_plugins as $vendor_plugin ) {
+			if ( strstr( $plugin, $vendor_plugin ) ) {
+				$url = str_replace( array( '/plugins/', '/mu-plugins/' ), '/vendor-plugins/', $url );
+				$url = str_replace( $dir, '', $url );
+			}
+		}
+
+		return $url;
 	}
 
 	/**
