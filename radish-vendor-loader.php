@@ -16,16 +16,16 @@ class Radish_Vendor_Loader {
 	public function __construct() {
 		$this->do_autoload();
 
-		register_plugin_directory( array(
+		if ( is_admin() ) {
+			$class = new Radish_Vendor_Loader_Admin( $this );
+		} else {
+			$class = new Radish_Vendor_Loader_Core( $this );
+		}
+
+		$class->register_plugin_directory( array(
 			'dir' => 'vendor-plugins',
 			'label' => 'Vendor',
 		) );
-
-		if ( is_admin() ) {
-			new Radish_Vendor_Loader_Admin( $this );
-		} else {
-			new Radish_Vendor_Loader_Core( $this );
-		}
 	}
 
 	private function do_autoload() {
