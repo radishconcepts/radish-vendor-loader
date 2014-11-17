@@ -21,6 +21,9 @@ You can either load this plugin as a Composer dependency (loading it in `mu-plug
             "wp-content/mu-plugins/radish-vendor-loader/": ["radishconcepts/radish-vendor-loader"]
         }
     },
+"require": {
+		"radishconcepts/radish-vendor-loader": "0.1.*"
+    }
 ```
 
 ### Install manually
