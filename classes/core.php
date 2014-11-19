@@ -7,8 +7,8 @@ class Radish_Vendor_Loader_Core {
 	public function __construct( $loader ) {
 		$this->loader = $loader;
 
-		add_action( 'plugins_loaded', array( $this, 'setup_vendors_type' ), 0 );
-		add_action( 'plugins_loaded', array( $this, 'load_plugins' ), 0 );
+		add_action( 'plugins_loaded', array( $this, 'setup_vendors_type' ), -10 );
+		add_action( 'plugins_loaded', array( $this, 'load_plugins' ), -9 );
 		add_filter( 'plugins_url', array( $this, 'plugins_url' ), 10, 3 );
 	}
 
