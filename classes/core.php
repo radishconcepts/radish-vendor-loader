@@ -13,20 +13,67 @@ class Radish_Vendor_Loader_Core {
 	}
 
 	public function plugins_url( $url, $path, $plugin ) {
-		$dir = dirname( plugin_basename( $plugin ) );
-		$dir_parts = explode('/', $dir );
-		$dir_name = end( $dir_parts );
-		$dir = str_replace( $dir_name, '', $dir );
+		if ( substr( $plugin, - 4 ) == '.php' ) {
+			if ( strstr( $plugin, '/' ) ) {
+				$plugin = $this->create_plugin_slug_from_file_path( $plugin );
+			} else {
+				$plugin = $this->create_plugin_slug_from_just_file( $plugin );
+			}
+		} else {
+			$plugin = $this->create_plugin_slug_from_directory_path( $plugin );
+		}
+
 		$vendor_plugins = get_option( 'active_plugins_vendor' );
 
 		foreach ( $vendor_plugins as $vendor_plugin ) {
 			if ( strstr( $plugin, $vendor_plugin ) ) {
-				$url = str_replace( array( '/plugins/', '/mu-plugins/' ), '/vendor-plugins/', $url );
-				$url = str_replace( $dir, '', $url );
+				$url_parts = explode( dirname($vendor_plugin), $url );
+				$suffix = ( isset( $url_parts[1] ) ) ? dirname($vendor_plugin) . $url_parts[1] : dirname($vendor_plugin);
+				$url = WP_CONTENT_URL . '/vendor-plugins/' . $suffix;
 			}
 		}
 
 		return $url;
+	}
+
+	/**
+	 * @param string
+	 * @return string
+	 */
+	private function create_plugin_slug_from_file_path( $plugin ) {
+		$plugin_parts = explode( '/', $plugin );
+		$last_bit = array_pop( $plugin_parts );
+		$second_last_bit = array_pop( $plugin_parts );
+		return trailingslashit($second_last_bit) . $last_bit;
+	}
+
+	/**
+	 * @param string
+	 * @return string
+	 */
+	private function create_plugin_slug_from_just_file( $plugin ) {
+		$plugin_parts = explode( '/', $plugin );
+		$last_bit = end( $plugin_parts );
+		$dir_name = str_replace( '.php', '', $last_bit );
+		return trailingslashit( $dir_name ) . $dir_name . '.php';
+	}
+
+	/**
+	 * @param string
+	 * @return string
+	 */
+	private function create_plugin_slug_from_directory_path( $plugin ) {
+		$dir_parts = explode( '/', $plugin );
+		$found_key = 0;
+		foreach ( $dir_parts as $key => $value ) {
+			if ( strstr( $value, 'plugins' ) ) {
+				$found_key = $key;
+				break;
+			}
+		}
+
+		$plugin_slug = $dir_parts[ $found_key + 1 ];
+		return trailingslashit( $plugin_slug ) . $plugin_slug . '.php';
 	}
 
 	public function setup_vendors_type() {
